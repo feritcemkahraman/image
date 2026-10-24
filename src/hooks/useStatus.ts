@@ -7,10 +7,12 @@ export default function useStatus({
   src,
   isCustomPlaceholder,
   fallback,
+  crossOrigin,
 }: {
   src: string;
   isCustomPlaceholder?: boolean;
   fallback?: string;
+  crossOrigin?: string;
 }) {
   const [status, setStatus] = useState<ImageStatus>(isCustomPlaceholder ? 'loading' : 'normal');
   const isLoaded = useRef(false);
@@ -19,7 +21,7 @@ export default function useStatus({
   // https://github.com/react-component/image/pull/187
   useEffect(() => {
     let isCurrentSrc = true;
-    isImageValid(src).then(isValid => {
+    isImageValid(src, crossOrigin).then(isValid => {
       // https://github.com/ant-design/ant-design/issues/44948
       // If src changes, the previous setStatus should not be triggered
       if (!isValid && isCurrentSrc) {
@@ -29,7 +31,7 @@ export default function useStatus({
     return () => {
       isCurrentSrc = false;
     };
-  }, [src]);
+  }, [src, crossOrigin]);
 
   useEffect(() => {
     if (isCustomPlaceholder && !isLoaded.current) {
