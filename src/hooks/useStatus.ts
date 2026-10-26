@@ -39,7 +39,7 @@ export default function useStatus({
     } else if (isError) {
       setStatus('normal');
     }
-  }, [src]);
+  }, [src, crossOrigin]);
 
   const onLoad = () => {
     setStatus('normal');
